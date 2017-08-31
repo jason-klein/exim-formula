@@ -20,6 +20,9 @@ exim_install_packages:
 {% set relay_domains = salt['pillar.get']('exim:config:relay_domains', '') %} 
 {% set relay_nets = salt['pillar.get']('exim:config:relay_nets', '') %} 
 {% set smarthost = salt['pillar.get']('exim:config:smarthost', '') %} 
+{% set filemode = salt['pillar.get']('exim:config:filemode', '644') %} 
+{% set use_split_config = salt['pillar.get']('exim:config:use_split_config', 'false') %} 
+{% set mailname_in_oh = salt['pillar.get']('exim:config:mailname_in_oh', 'true') %} 
 
 {{ map.config_dir }}/{{ map.config_file }}:
   file.managed:
@@ -35,6 +38,9 @@ exim_install_packages:
         dc_relay_domains='{{ relay_domains }}'
         dc_relay_nets='{{ relay_nets }}'
         dc_smarthost='{{ smarthost }}'
+        CFILEMODE='{{ filemode }}'
+        dc_use_split_config='{{ use_split_config }}'
+        dc_mailname_in_oh='{{ mailname_in_oh }}'
     - watch_in:
       - service: {{ map.service }}
 
